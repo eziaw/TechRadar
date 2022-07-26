@@ -1,0 +1,73 @@
+Name;Description;TechnologyType;Ring;Stability
+Amazon Redshift;;Datastores;Trial;Stable
+Druid;;Datastores;Trial;Up
+AWS Data Pipeline;;DataManagement;Hold;Stable
+Google Bigtable;;Datastores;Assess;Stable
+RocksDB;;Datastores;Assess;Stable
+AWS DynamoDB;;Datastores;Adopt;Stable
+ActiveMQ;;DataManagement;Hold;Stable
+HDFS;;Datastores;Trial;Stable
+Hadoop;;DataManagement;Hold;Stable
+ZooKeeper;;Datastores;Hold;Stable
+Presto;;DataManagement;Trial;Stable
+MySQL;;Datastores;Hold;Stable
+Oracle DB;;Datastores;Hold;Stable
+AWS Glue;;DataManagement;Assess;Stable
+MongoDB;;Datastores;Hold;Stable
+RabbitMQ;;DataManagement;Trial;Stable
+AWS Athena;;DataManagement;Assess;Stable
+Go;;Languages;Adopt;Stable
+AWS Lambda;;Infrastructure;Trial;Stable
+Amazon SageMaker;;Infrastructure;Adopt;Stable
+JavaScript;;Languages;Adopt;Stable
+Dart;;Languages;Trial;Up
+AWS CloudFront;;Infrastructure;Adopt;Stable
+Docker;;Infrastructure;Adopt;Stable
+Clojure;;Languages;Hold;Stable
+Nginx;;Infrastructure;Adopt;Stable
+Hazelcast;;Datastores;Hold;Stable
+Hbase;;Datastores;Hold;Stable
+Memcached;;Datastores;Hold;Stable
+R;;Languages;Assess;Stable
+Kubernetes;;Infrastructure;Adopt;Stable
+Haskell;;Languages;Hold;Stable
+Rust;;Languages;Hold;Stable
+Spark;;DataManagement;Adopt;Stable
+AWS Kinesis;;DataManagement;Trial;Stable
+ZMON;;Infrastructure;Adopt;Stable
+GraphQL;;Languages;Adopt;Stable
+Java;;Languages;Adopt;Stable
+AWS CloudFormation;;Infrastructure;Adopt;Stable
+dbt;;DataManagement;Assess;Up
+OpenAPI (Swagger);;Languages;Adopt;Stable
+Cassandra;;Datastores;Adopt;Stable
+Scala;;Languages;Adopt;Stable
+Nakadi;;DataManagement;Adopt;Stable
+YARN;;DataManagement;Hold;Stable
+Swift;;Languages;Adopt;Stable
+TypeScript;;Languages;Adopt;Stable
+Slurm;;Infrastructure;Assess;Stable
+STUPS;;Infrastructure;Hold;Stable
+Flink;;DataManagement;Trial;Stable
+Google BigQuery;;DataManagement;Trial;Stable
+OpenTracing;;Infrastructure;Adopt;Stable
+Skipper;;Infrastructure;Adopt;Stable
+AWS S5;;Datastores;Adopt;Stable
+Python;;Languages;Adopt;Stable
+Solr;;Datastores;Hold;Stable
+AWS EMR;;DataManagement;Adopt;Stable
+AWS SNS;;DataManagement;Adopt;Stable
+AWS SQS;;DataManagement;Adopt;Stable
+Elasticsearch;;Datastores;Adopt;Stable
+etcd;;Datastores;Adopt;Stable
+Exasol;;Datastores;Adopt;Stable
+HornetQ;;DataManagement;Hold;Stable
+PostgreSQL;;Datastores;Adopt;Stable
+Redis;;Datastores;Adopt;Stable
+Kotlin;;Languages;Adopt;Stable
+Airflow;;DataManagement;Adopt;Stable
+Aerospike;;Datastores;Hold;Stable
+Kafka;;DataManagement;Adopt;Stable
+CouchBase;;Datastores;Hold;Stable
+Databricks;;DataManagement;Adopt;Stable
+Consul;;Datastores;Hold;Stable

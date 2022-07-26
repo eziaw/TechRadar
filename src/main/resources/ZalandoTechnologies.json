@@ -1,0 +1,42 @@
+[
+  {
+    "name": "PostgreSQL",
+    "description": "",
+    "category": "Datastores",
+    "ring": "Adopt",
+    "stability": "Stable"
+  },
+
+  {
+    "name": "Amazon Redshift",
+    "description": "",
+    "category": "Datastores",
+    "ring": "Trial",
+    "stability": "Stable"
+  },
+
+  {
+    "name": "RocksDB",
+    "description": "",
+    "category": "Datastores",
+    "ring": "Assess",
+    "stability": "Stable"
+  },
+
+  {
+    "name": "JavaScript",
+    "description": "",
+    "category": "Languages",
+    "ring": "Adopt",
+    "stability": "Stable"
+  },
+
+  {
+    "name": "Haskell",
+    "description": "",
+    "category": "Languages",
+    "ring": "Hold",
+    "stability": "Stable"
+  }
+
+]
