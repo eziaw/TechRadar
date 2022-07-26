@@ -47,6 +47,7 @@ class RadarExporter: DataExporter<Radar> {
                         "ctx.stroke();\n" +
                         "}\n" +
 
+                        // TUTAJ JEST TA FUNKCJA RYSUJĄCA PUNKTY, PRZYJMUJE ŚRODEK KOŁA, KĄT, ODLEGŁOŚĆ OD POCZĄTKU PIERŚCIENIA, NUMER PIERŚCIENIA, ROZMIAR PIERŚCIENIA
                         "function drawPoint(center_x, center_y, angle, radius, ringNum, ringSize, label) {\n" +
                         "ctx.fillStyle = 'black'; \n" +
                         "var x = center_x + (radius+ringNum*ringSize) * Math.cos(-angle*Math.PI/180);\n" +
@@ -65,6 +66,7 @@ class RadarExporter: DataExporter<Radar> {
                         "drawCircle(\"+ringsAmount+\"*100, \"+ringsAmount+\"*100, i*100);\n" +
                         "}\n" +
                         "for(i=1; i<=\"+radar.technologies.size+\"; i++) { \n" +
+                        // NA RAZIE TAK WYGLĄDA RYSOWANIE PUNKTÓW, CHCĘ TO SPARAMETRYZOWAĆ WŁAŚNIE NA PODSTAWIE PIERŚCIENI I KATEGORII WYCIĄGANYCH Z OBIEKTU RADARU
                         "drawPoint(\"+ringsAmount+\"*100, \"+ringsAmount+\"*100, randInRange(0, 360), randInRange(0, 100), randInRange(0, 4), 100, i);\n" +
                         "}" +
                         "}"
@@ -129,9 +131,17 @@ class RadarExporter: DataExporter<Radar> {
 
         ctx.setLineDash(0.0, 0.0)
 
+        /*
         when(radar.technologies.forEach{ technology -> technology.ring }) {
             //Ring.Assess -> println("test")
             //Ring.Hold -> println("cos")
+        }
+         */
+
+        radar.technologies.forEach { technology ->
+            when (technology.ring) {
+                Ring.Assess -> println("test")
+            }
         }
         // SRODEK KOŁA: 300;600
         // LEWY ROG: 100;600
