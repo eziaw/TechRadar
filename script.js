@@ -1,16 +1,19 @@
 const randInRange = (min, max) => Math.floor(Math.random() * (max - min)) + min; 
-function drawRadar(ringsAmount, ringSize, marginLeft, marginTop) { 
+function drawRadar(ringsAmount, categoriesAmount, ringSize, marginLeft, marginTop) { 
 var point_size = 8; 
 var c = document.getElementById("radar"); 
 var ctx = c.getContext('2d'); 
-function drawCoordSys(ringsAmount, ringSize, dash, marginLeft, marginTop) { 
+function drawCoordSys(ringsAmount, categoriesAmount, ringSize, dash, marginLeft, marginTop) { 
 ctx.beginPath(); 
 ctx.setLineDash([dash, dash]); 
-ctx.moveTo(ringsAmount*ringSize+marginLeft, marginTop); 
-ctx.lineTo(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize*2+marginTop); 
-ctx.moveTo(marginLeft, ringsAmount*ringSize+marginTop); 
-ctx.lineTo(ringsAmount*ringSize*2+marginLeft, ringsAmount*ringSize+marginTop); 
+for(i=0; i<=categoriesAmount; i++) { 
+ var angle = 360/categoriesAmount*i; 
+var x = ringsAmount*ringSize+marginLeft + (ringsAmount*ringSize) * Math.cos(-angle*Math.PI/180);
+var y = ringsAmount*ringSize+marginTop + (ringsAmount*ringSize) * Math.sin(-angle*Math.PI/180);
+ctx.moveTo(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize+marginTop); 
+ctx.lineTo(x, y); 
 ctx.stroke(); 
+} 
 ctx.setLineDash([0, 0]); 
 } 
 function drawRings(ringsAmount, ringSize, marginLeft, marginTop) { 
@@ -31,7 +34,7 @@ ctx.font = 'bold 10px arial';
 ctx.fillStyle = 'red'; 
 ctx.fillText(label,x-6,y+4);
 }
-drawCoordSys(ringsAmount, ringSize, 5, marginLeft, marginTop) 
+drawCoordSys(ringsAmount, categoriesAmount, ringSize, 5, marginLeft, marginTop) 
 drawRings(ringsAmount, ringSize, marginLeft, marginTop) 
 drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(3, 97), randInRange(5, ringSize-5), 1, ringSize, 1) 
 drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(3, 97), randInRange(5, ringSize-5), 1, ringSize, 2) 

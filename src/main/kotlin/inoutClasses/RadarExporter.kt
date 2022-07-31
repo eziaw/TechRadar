@@ -27,19 +27,22 @@ class RadarExporter: DataExporter<Radar> {
             jsFile.appendText(
                 "const randInRange = (min, max) => Math.floor(Math.random() * (max - min)) + min; \n" +
 
-                        "function drawRadar(ringsAmount, ringSize, marginLeft, marginTop) { \n" +
+                        "function drawRadar(ringsAmount, categoriesAmount, ringSize, marginLeft, marginTop) { \n" +
                         "var point_size = 8; \n" +
                         "var c = document.getElementById(\"radar\"); \n" +
                         "var ctx = c.getContext('2d'); \n" +
 
-                "function drawCoordSys(ringsAmount, ringSize, dash, marginLeft, marginTop) { \n" +
+                "function drawCoordSys(ringsAmount, categoriesAmount, ringSize, dash, marginLeft, marginTop) { \n" +
                     "ctx.beginPath(); \n" +
                     "ctx.setLineDash([dash, dash]); \n" +
-                    "ctx.moveTo(ringsAmount*ringSize+marginLeft, marginTop); \n" +
-                    "ctx.lineTo(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize*2+marginTop); \n" +
-                    "ctx.moveTo(marginLeft, ringsAmount*ringSize+marginTop); \n" +
-                    "ctx.lineTo(ringsAmount*ringSize*2+marginLeft, ringsAmount*ringSize+marginTop); \n" +
-                    "ctx.stroke(); \n" +
+                        "for(i=0; i<=categoriesAmount; i++) { \n " +
+                        "var angle = 360/categoriesAmount*i; \n" +
+                        "var x = ringsAmount*ringSize+marginLeft + (ringsAmount*ringSize) * Math.cos(-angle*Math.PI/180);\n" +
+                        "var y = ringsAmount*ringSize+marginTop + (ringsAmount*ringSize) * Math.sin(-angle*Math.PI/180);\n" +
+                    "ctx.moveTo(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize+marginTop); \n" +
+                    "ctx.lineTo(x, y); \n" +
+                        "ctx.stroke(); \n" +
+                    "} \n" +
                     "ctx.setLineDash([0, 0]); \n" +
                         "} \n" +
 
@@ -66,7 +69,7 @@ class RadarExporter: DataExporter<Radar> {
 
             jsFile.appendText(
 
-                "drawCoordSys(ringsAmount, ringSize, 5, marginLeft, marginTop) \n" +
+                "drawCoordSys(ringsAmount, categoriesAmount, ringSize, 5, marginLeft, marginTop) \n" +
                         "drawRings(ringsAmount, ringSize, marginLeft, marginTop) \n"
             )
 
@@ -112,7 +115,7 @@ class RadarExporter: DataExporter<Radar> {
                         "<meta charset=\"utf-8\">\n" +
                         "<script src=\"script.js\"></script>\n" +
                         "</head>\n" +
-                        "<body onload=\"drawRadar("+radar.ringsAmount+","+ringSize+", "+marginLeft+", "+marginTop+")\">\n" +
+                        "<body onload=\"drawRadar("+radar.ringsAmount+", "+radar.categoriesAmount+","+ringSize+", "+marginLeft+", "+marginTop+")\">\n" +
                         "<canvas id=\"radar\", width="+radar.ringsAmount*250 +", height="+ radar.ringsAmount*250 +">\n" +
                         "</canvas>\n" +
                         "</body>\n" +
