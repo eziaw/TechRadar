@@ -14,6 +14,6 @@ internal class RadarExporterTest {
     @Test
     fun pdf() {
         val import = importer.importFromCsv("src/main/resources/ZalandoTechnologies.csv").generateRadar()
-        exporter.exportToPdf(import)
+        exporter.exportToHtml(import)
     }
 }

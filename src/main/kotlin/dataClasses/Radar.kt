@@ -11,7 +11,7 @@ data class Radar(
 
 fun checkRingsAmount(technologies: Set<Technology>): Int {
     val rings = mutableSetOf<Ring>()
-    technologies.forEach{
+    technologies.groupBy{
             technology -> rings.add(technology.ring)
     }
     return rings.size
@@ -19,7 +19,7 @@ fun checkRingsAmount(technologies: Set<Technology>): Int {
 
 fun checkCategoriesAmount(technologies: Set<Technology>): Int {
     val categories = mutableSetOf<Category>()
-    technologies.forEach{
+    technologies.groupBy{
             technology -> categories.add(technology.category)
     }
     return categories.size

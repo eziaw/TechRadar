@@ -16,21 +16,17 @@ class RadarDataImporter: DataImporter {
     override fun importFromCsv(fileName: String): Set<Technology> {
 
         val technologies = mutableSetOf<Technology>()
-        val csvFile = File(fileName)
-        BufferedReader(FileReader(csvFile)).use { br ->
-            br.readLine()
-            var line: String?
-            while (br.readLine().also { line = it } != null) {
-                val row = line?.split(";")
-                val technology = Technology(
-                    name = row?.get(0).toString(),
-                    description = row?.get(1).toString(),
-                    category = Category.valueOf(row!![2]),
-                    ring = Ring.valueOf(row[3]),
-                    stability = Stability.valueOf(row[4])
+        val csvFile = File(fileName).readLines().drop(1).forEach {
+            val line = it.split(";")
+            technologies.add(
+                Technology(
+                    name = line[0],
+                    description = line[1],
+                    category = Category.valueOf(line[2]),
+                    ring = Ring.valueOf(line[3]),
+                    stability = Stability.valueOf(line[4])
                 )
-                technologies.add(technology)
-            }
+            )
         }
         technologies.forEach{
                 technology -> println(technology)
