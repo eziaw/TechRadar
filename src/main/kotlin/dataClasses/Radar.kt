@@ -5,24 +5,24 @@ import enums.Ring
 
 data class Radar(
     val technologies: Set<Technology>,
-    val ringsAmount: Int = checkRingsAmount(technologies),
-    val categoriesAmount: Int = checkCategoriesAmount(technologies)
+    val rings: Set<Ring> = checkRingsAmount(technologies),
+    val categories: Set<Category> = checkCategoriesAmount(technologies)
 )
 
-fun checkRingsAmount(technologies: Set<Technology>): Int {
+fun checkRingsAmount(technologies: Set<Technology>): Set<Ring> {
     val rings = mutableSetOf<Ring>()
     technologies.groupBy{
             technology -> rings.add(technology.ring)
     }
-    return rings.size
+    return rings
 }
 
-fun checkCategoriesAmount(technologies: Set<Technology>): Int {
+fun checkCategoriesAmount(technologies: Set<Technology>): Set<Category> {
     val categories = mutableSetOf<Category>()
     technologies.groupBy{
             technology -> categories.add(technology.category)
     }
-    return categories.size
+    return categories
 }
 
 fun Set<Technology>.generateRadar(): Radar = Radar(
