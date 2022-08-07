@@ -6,8 +6,9 @@ import java.io.File
 import java.io.FileOutputStream
 import com.itextpdf.text.Document
 import com.itextpdf.text.pdf.PdfWriter
-import enums.Category
 import enums.Ring
+import kotlin.math.cos
+import kotlin.math.sin
 
 class RadarExporter: DataExporter<Radar> {
 
@@ -76,7 +77,7 @@ class RadarExporter: DataExporter<Radar> {
             radar.technologies.forEach { technology ->
                 i+=1
                 for(j in 0 until radar.categories.size) {
-                    if (technology.category.equals(radar.categories.elementAt(j))) {
+                    if (technology.category == radar.categories.elementAt(j)) {
                         val startAngle = 360/radar.categories.size *j +5
                         val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
                         when(technology.ring) {
@@ -117,8 +118,11 @@ class RadarExporter: DataExporter<Radar> {
 
     override fun exportToPdf(radar: Radar): File {
 
-        val ringsAmount = radar.rings
-        val categoriesAmount = radar.categories
+        val ringsAmount = radar.rings.size
+        val categoriesAmount = radar.categories.size
+        val ringSize = 50.0
+        val centerX = 300.0
+        val centerY = 600.0
 
         val pdfFile = File("radar.pdf")
         val output = FileOutputStream(pdfFile)
@@ -127,21 +131,24 @@ class RadarExporter: DataExporter<Radar> {
         document.open()
 
         val ctx = writer.directContent
-        fun drawCircle(ringsAmount: Int) {
+        fun drawRings(ringsAmount: Int) {
             for (i in 1..ringsAmount) {
-                ctx.circle(radar.rings.size * 75.0, radar.rings.size * 150.0, i * 50.0)
+                ctx.circle(centerX, centerY, i * ringSize)
             }
         }
-        drawCircle(radar.rings.size)
+        drawRings(radar.rings.size)
         ctx.stroke()
 
         fun drawCoordSys(dash: Double) {
             ctx.setLineDash(dash, dash)
-            ctx.moveTo(radar.rings.size * 75.0, radar.rings.size * 200.0)
-            ctx.lineTo(radar.rings.size * 75.0, radar.rings.size / 2 * 200.0)
-            ctx.moveTo(radar.rings.size / 2 * 50.0, radar.rings.size * 150.0)
-            ctx.lineTo(radar.rings.size * 2.5 * 50.0, radar.rings.size * 150.0)
-            ctx.stroke()
+            for(i in 0 .. categoriesAmount) {
+                val angle = 360/categoriesAmount*i
+                val x = centerX + (ringsAmount*ringSize) * cos(-angle*Math.PI/180)
+                val y = centerY + (ringsAmount*ringSize) * sin(-angle*Math.PI/180)
+                ctx.moveTo(centerX, centerY)
+                ctx.lineTo(x, y)
+                ctx.stroke()
+            }
         }
         drawCoordSys(5.0)
 
@@ -164,9 +171,28 @@ class RadarExporter: DataExporter<Radar> {
         // PRAWY ROG: 500;600
         // GORNY ROG: 300;800
         // DOLNY ROG: 300;400
-        ctx.circle(250.0, 750.0, 3.0)
-        ctx.fill()
-        ctx.stroke()
+        fun drawPoint(centerX: Double, centerY: Double, angle: Int, radius: Int, ringNum: Int, ringSize: Double) {
+            val x = centerX + (radius+ringNum*ringSize) * cos(-angle*Math.PI/180)
+            val y = centerY + (radius+ringNum*ringSize) * sin(-angle*Math.PI/180)
+            ctx.circle(x, y, 3.0)
+            ctx.fill()
+            ctx.stroke()
+        }
+
+        radar.technologies.forEach { technology ->
+            for(j in 0 until radar.categories.size) {
+                if (technology.category == radar.categories.elementAt(j)) {
+                    val startAngle = 360/radar.categories.size *j +5
+                    val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
+                    when(technology.ring) {
+                        Ring.Adopt -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 0, 50.0)
+                        Ring.Trial -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 1, 50.0)
+                        Ring.Assess -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 2, 50.0)
+                        Ring.Hold -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 3, 50.0)
+                    }
+                }
+            }
+        }
         document.close()
         return pdfFile
     }
