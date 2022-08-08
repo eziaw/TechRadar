@@ -10,6 +10,6 @@ interface DataImporter {
 }
 
 interface DataExporter<R> {
-    fun exportToHtml(radar: Radar): List<File>
-    fun exportToPdf(radar: Radar): File
+    fun exportToHtml(radar: Radar, fileName: String): List<File>
+    fun exportToPdf(radar: Radar, fileName: String): File
 }

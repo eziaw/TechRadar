@@ -12,10 +12,11 @@ repositories {
 }
 
 dependencies {
-    implementation("org.junit.jupiter:junit-jupiter:5.8.1")
+    implementation("org.junit.jupiter:junit-jupiter:5.9.0")
     testImplementation(kotlin("test"))
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.3")
     implementation("com.itextpdf:itextpdf:5.5.13.3")
+    implementation("com.willowtreeapps.assertk:assertk-jvm:0.25")
 }
 
 tasks.test {

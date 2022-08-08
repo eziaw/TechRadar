@@ -12,14 +12,14 @@ import kotlin.math.sin
 
 class RadarExporter: DataExporter<Radar> {
 
-    override fun exportToHtml(radar: Radar): List<File> {
+    override fun exportToHtml(radar: Radar, fileName: String): List<File> {
 
         val ringSize = 100
         val marginLeft = 0
         val marginTop = 0
 
-        val jsFile = File("script.js")
-        val htmlFile = File("index.html")
+        val htmlFile = File("$fileName.html")
+        val jsFile = File("$fileName.js")
 
         fun generateScript() {
 
@@ -99,7 +99,7 @@ class RadarExporter: DataExporter<Radar> {
                     "<html>\n" +
                     "<head>\n" +
                         "<meta charset=\"utf-8\">\n" +
-                        "<script src=\"script.js\"></script>\n" +
+                        "<script src=\"$fileName.js\"></script>\n" +
                     "</head>\n" +
                     "<body onload=\"drawRadar("+radar.rings.size+", "+radar.categories.size+", "+ringSize+", "+marginLeft+", "+marginTop+")\">\n" +
                     "<canvas id=\"radar\" width="+radar.rings.size*250 +" height="+ radar.rings.size*250 +">\n" +
@@ -116,7 +116,7 @@ class RadarExporter: DataExporter<Radar> {
         return files
     }
 
-    override fun exportToPdf(radar: Radar): File {
+    override fun exportToPdf(radar: Radar, fileName: String): File {
 
         val ringsAmount = radar.rings.size
         val categoriesAmount = radar.categories.size
@@ -124,7 +124,7 @@ class RadarExporter: DataExporter<Radar> {
         val centerX = 300.0
         val centerY = 600.0
 
-        val pdfFile = File("radar.pdf")
+        val pdfFile = File("$fileName.pdf")
         val output = FileOutputStream(pdfFile)
         val document = Document()
         val writer = PdfWriter.getInstance(document, output)
@@ -135,9 +135,8 @@ class RadarExporter: DataExporter<Radar> {
             for (i in 1..ringsAmount) {
                 ctx.circle(centerX, centerY, i * ringSize)
             }
+            ctx.stroke()
         }
-        drawRings(radar.rings.size)
-        ctx.stroke()
 
         fun drawCoordSys(dash: Double) {
             ctx.setLineDash(dash, dash)
@@ -150,27 +149,8 @@ class RadarExporter: DataExporter<Radar> {
                 ctx.stroke()
             }
         }
-        drawCoordSys(5.0)
 
-        ctx.setLineDash(0.0, 0.0)
-
-        /*
-        when(radar.technologies.forEach{ technology -> technology.ring }) {
-            //Ring.Assess -> println("test")
-            //Ring.Hold -> println("cos")
-        }
-         */
-
-        radar.technologies.forEach { technology ->
-            when (technology.ring) {
-                Ring.Assess -> println("test")
-            }
-        }
-        // SRODEK KOŁA: 300;600
-        // LEWY ROG: 100;600
-        // PRAWY ROG: 500;600
-        // GORNY ROG: 300;800
-        // DOLNY ROG: 300;400
+        // SRODEK KOŁA: 300;600 // LEWY ROG: 100;600 // PRAWY ROG: 500;600 // GORNY ROG: 300;800 // DOLNY ROG: 300;400
         fun drawPoint(centerX: Double, centerY: Double, angle: Int, radius: Int, ringNum: Int, ringSize: Double) {
             val x = centerX + (radius+ringNum*ringSize) * cos(-angle*Math.PI/180)
             val y = centerY + (radius+ringNum*ringSize) * sin(-angle*Math.PI/180)
@@ -179,20 +159,25 @@ class RadarExporter: DataExporter<Radar> {
             ctx.stroke()
         }
 
+        drawCoordSys(5.0)
+        ctx.setLineDash(0.0, 0.0)
+        drawRings(radar.rings.size)
+
         radar.technologies.forEach { technology ->
             for(j in 0 until radar.categories.size) {
                 if (technology.category == radar.categories.elementAt(j)) {
                     val startAngle = 360/radar.categories.size *j +5
                     val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
                     when(technology.ring) {
-                        Ring.Adopt -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 0, 50.0)
-                        Ring.Trial -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 1, 50.0)
-                        Ring.Assess -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 2, 50.0)
-                        Ring.Hold -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..50).random(), 3, 50.0)
+                        Ring.Adopt -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 0, ringSize)
+                        Ring.Trial -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 1, ringSize)
+                        Ring.Assess -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 2, ringSize)
+                        Ring.Hold -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 3, ringSize)
                     }
                 }
             }
         }
+
         document.close()
         return pdfFile
     }
