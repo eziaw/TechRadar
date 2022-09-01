@@ -14,64 +14,74 @@ class RadarExporter: DataExporter<Radar> {
 
     override fun exportToHtml(radar: Radar, fileName: String): List<File> {
 
-        val ringSize = 100
-        val marginLeft = 0
-        val marginTop = 0
-
         val htmlFile = File("$fileName.html")
         val jsFile = File("$fileName.js")
 
-        fun generateScript() {
+        fun generateJsFile(marginLeft: Int, marginTop: Int, ringSize: Int, pointSize: Int) {
+
+            val ringsAmount = radar.rings.size
+            val categoriesAmount = radar.categories.size
+
+            val centerX = radar.rings.size*ringSize+marginLeft
+            val centerY = radar.rings.size*ringSize+marginTop
+
+            fun drawCoordSys(dash: Int) {
+                jsFile.appendText(
+                    "ctx.beginPath(); \n" +
+                    "ctx.setLineDash([$dash, $dash]) \n"
+                )
+                for(i in 0 .. categoriesAmount) {
+                    val angle = 360/categoriesAmount*i
+                    val x = centerX + (ringsAmount*ringSize) * cos(-angle*Math.PI/180)
+                    val y = centerY + (ringsAmount*ringSize) * sin(-angle*Math.PI/180)
+                    jsFile.appendText(
+                        "ctx.moveTo($centerX, $centerY) \n" +
+                        "ctx.lineTo($x, $y) \n" +
+                        "ctx.stroke() \n"
+                    )
+                }
+                jsFile.appendText(
+                    "ctx.setLineDash([0, 0]) \n"
+                )
+            }
+
+            fun drawRings() {
+                for(i in 1 .. ringsAmount) {
+                    jsFile.appendText(
+                        "ctx.beginPath(); \n" +
+                        "ctx.arc($centerX, $centerY, $ringSize*$i, 0, 2*Math.PI);\n" +
+                        "ctx.stroke(); \n"
+                    )
+                }
+            }
+
+            fun addPoint(angle: Int, ringRadius: Int, ringNum: Int, ringSize: Int, label: String) {
+                val x = centerX + (ringRadius+ringNum*ringSize) * cos(-angle*Math.PI/180)
+                val y = centerY + (ringRadius+ringNum*ringSize) * sin(-angle*Math.PI/180)
+                jsFile.appendText(
+                    "drawPoint($x, $y, $pointSize, $label) \n"
+                )
+            }
 
             jsFile.writeText("")
 
             jsFile.appendText(
-                "const randInRange = (min, max) => Math.floor(Math.random() * (max - min)) + min; \n" +
-
-                "function drawRadar(ringsAmount, categoriesAmount, ringSize, marginLeft, marginTop) { \n" +
-                    "var point_size = 8; \n" +
+                "function drawRadar() { \n" +
                     "var c = document.getElementById(\"radar\"); \n" +
                     "var ctx = c.getContext('2d'); \n" +
-
-                    "function drawCoordSys(ringsAmount, categoriesAmount, ringSize, dash, marginLeft, marginTop) { \n" +
-                        "ctx.beginPath(); \n" +
-                        "ctx.setLineDash([dash, dash]); \n" +
-                        "for(i=0; i<=categoriesAmount; i++) { \n " +
-                            "var angle = 360/categoriesAmount*i; \n" +
-                            "var x = ringsAmount*ringSize+marginLeft + (ringsAmount*ringSize) * Math.cos(-angle*Math.PI/180);\n" +
-                            "var y = ringsAmount*ringSize+marginTop + (ringsAmount*ringSize) * Math.sin(-angle*Math.PI/180);\n" +
-                            "ctx.moveTo(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize+marginTop); \n" +
-                            "ctx.lineTo(x, y); \n" +
-                            "ctx.stroke(); \n" +
-                        "} \n" +
-                        "ctx.setLineDash([0, 0]); \n" +
-                    "} \n" +
-
-                    "function drawRings(ringsAmount, ringSize, marginLeft, marginTop) { \n" +
-                        "for(i=1; i<=ringsAmount; i++) { \n" +
-                            "ctx.beginPath(); \n" +
-                            "ctx.arc(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize+marginTop, ringSize*i, 0, 2*Math.PI);\n" +
-                            "ctx.stroke(); \n" +
-                        "}\n" +
-                    "}\n" +
-
-                    "function drawPoint(center_x, center_y, angle, radius, ringNum, ringSize, label) {\n" +
+                    "function drawPoint(x, y, pointSize, label) {\n" +
                         "ctx.fillStyle = 'black'; \n" +
-                        "var x = center_x + (radius+ringNum*ringSize) * Math.cos(-angle*Math.PI/180);\n" +
-                        "var y = center_y + (radius+ringNum*ringSize) * Math.sin(-angle*Math.PI/180);\n" +
                         "ctx.beginPath();\n" +
-                        "ctx.arc(x, y, point_size, 0, 2 * Math.PI);\n" +
+                        "ctx.arc(x, y, pointSize, 0, 2*Math.PI);\n" +
                         "ctx.fill();\n" +
                         "ctx.font = 'bold 10px arial';\n" +
                         "ctx.fillStyle = 'red'; \n" +
-                        "ctx.fillText(label,x-6,y+4);\n" +
+                        "ctx.fillText(label, x-6, y+4);\n" +
                     "}\n"
             )
 
-            jsFile.appendText(
-                "drawCoordSys(ringsAmount, categoriesAmount, ringSize, 5, marginLeft, marginTop) \n" +
-                "drawRings(ringsAmount, ringSize, marginLeft, marginTop) \n"
-            )
+            drawCoordSys(5)
+            drawRings()
 
             var i = 0
             radar.technologies.forEach { technology ->
@@ -80,11 +90,13 @@ class RadarExporter: DataExporter<Radar> {
                     if (technology.category == radar.categories.elementAt(j)) {
                         val startAngle = 360/radar.categories.size *j +5
                         val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
+                        val angle = (startAngle..stopAngle).random()
+                        val radius = (ringSize/10 .. ringSize-(ringSize/10)).random()
                         when(technology.ring) {
-                            Ring.Adopt -> jsFile.appendText("drawPoint("+radar.rings.size+"*ringSize+marginLeft, "+radar.rings.size+"*ringSize+marginTop, randInRange("+startAngle+", "+stopAngle+"), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, "+i+") \n")
-                            Ring.Trial -> jsFile.appendText("drawPoint("+radar.rings.size+"*ringSize+marginLeft, "+radar.rings.size+"*ringSize+marginTop, randInRange("+startAngle+", "+stopAngle+"), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, "+i+") \n")
-                            Ring.Assess -> jsFile.appendText("drawPoint("+radar.rings.size+"*ringSize+marginLeft, "+radar.rings.size+"*ringSize+marginTop, randInRange("+startAngle+", "+stopAngle+"), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, "+i+") \n")
-                            Ring.Hold -> jsFile.appendText("drawPoint("+radar.rings.size+"*ringSize+marginLeft, "+radar.rings.size+"*ringSize+marginTop, randInRange("+startAngle+", "+stopAngle+"), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, "+i+") \n")
+                            Ring.Adopt -> addPoint(angle, radius, 0, ringSize, i.toString())
+                            Ring.Trial -> addPoint(angle, radius, 1, ringSize, i.toString())
+                            Ring.Assess -> addPoint(angle, radius, 2, ringSize, i.toString())
+                            Ring.Hold -> addPoint(angle, radius, 3, ringSize, i.toString())
                         }
                     }
                 }
@@ -101,7 +113,7 @@ class RadarExporter: DataExporter<Radar> {
                         "<meta charset=\"utf-8\">\n" +
                         "<script src=\"$fileName.js\"></script>\n" +
                     "</head>\n" +
-                    "<body onload=\"drawRadar("+radar.rings.size+", "+radar.categories.size+", "+ringSize+", "+marginLeft+", "+marginTop+")\">\n" +
+                    "<body onload=\"drawRadar()\">\n" +
                     "<canvas id=\"radar\" width="+radar.rings.size*250 +" height="+ radar.rings.size*250 +">\n" +
                     "</canvas>\n" +
                     "</body>\n" +
@@ -111,7 +123,7 @@ class RadarExporter: DataExporter<Radar> {
         }
 
         generateHtml()
-        generateScript()
+        generateJsFile(0, 0, 100, 8)
         val files: List<File> = listOf(htmlFile, jsFile)
         return files
     }
@@ -133,7 +145,7 @@ class RadarExporter: DataExporter<Radar> {
         val ctx = writer.directContent
         fun drawRings(ringsAmount: Int) {
             for (i in 1..ringsAmount) {
-                ctx.circle(centerX, centerY, i * ringSize)
+                ctx.circle(centerX, centerY, i*ringSize)
             }
             ctx.stroke()
         }
@@ -151,7 +163,7 @@ class RadarExporter: DataExporter<Radar> {
         }
 
         // SRODEK KOŁA: 300;600 // LEWY ROG: 100;600 // PRAWY ROG: 500;600 // GORNY ROG: 300;800 // DOLNY ROG: 300;400
-        fun drawPoint(centerX: Double, centerY: Double, angle: Int, radius: Int, ringNum: Int, ringSize: Double) {
+        fun drawPoint(angle: Int, radius: Int, ringNum: Int, ringSize: Double) {
             val x = centerX + (radius+ringNum*ringSize) * cos(-angle*Math.PI/180)
             val y = centerY + (radius+ringNum*ringSize) * sin(-angle*Math.PI/180)
             ctx.circle(x, y, 3.0)
@@ -168,11 +180,13 @@ class RadarExporter: DataExporter<Radar> {
                 if (technology.category == radar.categories.elementAt(j)) {
                     val startAngle = 360/radar.categories.size *j +5
                     val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
+                    val angle = (startAngle..stopAngle).random()
+                    val radius = (5..ringSize.toInt()).random()
                     when(technology.ring) {
-                        Ring.Adopt -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 0, ringSize)
-                        Ring.Trial -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 1, ringSize)
-                        Ring.Assess -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 2, ringSize)
-                        Ring.Hold -> drawPoint(300.0, 600.0, (startAngle..stopAngle).random(), (5..ringSize.toInt()).random(), 3, ringSize)
+                        Ring.Adopt -> drawPoint(angle, radius, 0, ringSize)
+                        Ring.Trial -> drawPoint(angle, radius, 1, ringSize)
+                        Ring.Assess -> drawPoint(angle, radius, 2, ringSize)
+                        Ring.Hold -> drawPoint(angle, radius, 3, ringSize)
                     }
                 }
             }
