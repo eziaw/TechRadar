@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44d5d091-4b22-4559-b112-05eaecc73089" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/radar.html" beforeDir="false" afterPath="$PROJECT_DIR$/radar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/radar.js" beforeDir="false" afterPath="$PROJECT_DIR$/radar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/radar.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/radar.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/inoutClasses/RadarExporter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/inoutClasses/RadarExporter.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +82,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.RadarDataImporterTest">
+  <component name="RunManager" selected="Gradle.RadarExporterTest (1)">
     <configuration name="RadarDataImporterTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -198,8 +200,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.RadarDataImporterTest" />
         <item itemvalue="Gradle.RadarExporterTest (1)" />
+        <item itemvalue="Gradle.RadarDataImporterTest" />
         <item itemvalue="Gradle.RadarExporterTest.csvExporterTest" />
         <item itemvalue="Gradle.RadarDataImporterTest.testCsv" />
         <item itemvalue="Gradle.RadarExporterTest.pdf (1)" />

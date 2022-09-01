@@ -1,111 +1,115 @@
-const randInRange = (min, max) => Math.floor(Math.random() * (max - min)) + min; 
-function drawRadar(ringsAmount, categoriesAmount, ringSize, marginLeft, marginTop) { 
-var point_size = 8; 
+function drawRadar() { 
 var c = document.getElementById("radar"); 
 var ctx = c.getContext('2d'); 
-function drawCoordSys(ringsAmount, categoriesAmount, ringSize, dash, marginLeft, marginTop) { 
-ctx.beginPath(); 
-ctx.setLineDash([dash, dash]); 
-for(i=0; i<=categoriesAmount; i++) { 
- var angle = 360/categoriesAmount*i; 
-var x = ringsAmount*ringSize+marginLeft + (ringsAmount*ringSize) * Math.cos(-angle*Math.PI/180);
-var y = ringsAmount*ringSize+marginTop + (ringsAmount*ringSize) * Math.sin(-angle*Math.PI/180);
-ctx.moveTo(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize+marginTop); 
-ctx.lineTo(x, y); 
-ctx.stroke(); 
-} 
-ctx.setLineDash([0, 0]); 
-} 
-function drawRings(ringsAmount, ringSize, marginLeft, marginTop) { 
-for(i=1; i<=ringsAmount; i++) { 
-ctx.beginPath(); 
-ctx.arc(ringsAmount*ringSize+marginLeft, ringsAmount*ringSize+marginTop, ringSize*i, 0, 2*Math.PI);
-ctx.stroke(); 
-}
-}
-function drawPoint(center_x, center_y, angle, radius, ringNum, ringSize, label) {
+function drawPoint(x, y, pointSize, label) {
 ctx.fillStyle = 'black'; 
-var x = center_x + (radius+ringNum*ringSize) * Math.cos(-angle*Math.PI/180);
-var y = center_y + (radius+ringNum*ringSize) * Math.sin(-angle*Math.PI/180);
 ctx.beginPath();
-ctx.arc(x, y, point_size, 0, 2 * Math.PI);
+ctx.arc(x, y, pointSize, 0, 2*Math.PI);
 ctx.fill();
-ctx.font = 'bold 10px arial';
-ctx.fillStyle = 'red'; 
-ctx.fillText(label,x-6,y+4);
+ctx.font = 'bold 14px arial';
+ctx.fillStyle = 'green'; 
+ctx.fillText(label, x-8, y+6);
 }
-drawCoordSys(ringsAmount, categoriesAmount, ringSize, 5, marginLeft, marginTop) 
-drawRings(ringsAmount, ringSize, marginLeft, marginTop) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 1) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 2) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 3) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 4) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 5) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 6) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 7) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 8) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 9) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 10) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 11) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 12) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 13) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 14) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 15) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 16) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 17) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 18) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 19) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 20) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 21) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 22) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 23) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 24) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 25) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 26) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 27) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 28) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 29) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 30) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 31) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 32) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 33) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 34) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 35) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 36) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 37) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 38) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 39) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 40) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 41) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 42) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 43) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 44) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 45) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 46) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 47) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 2, ringSize, 48) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 49) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 50) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 1, ringSize, 51) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 52) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(275, 355), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 53) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 54) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 55) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 56) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 57) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 58) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 59) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 60) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 61) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 62) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 63) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 64) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 65) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(185, 265), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 66) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 67) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 68) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 69) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 70) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(95, 175), randInRange(ringSize/10, ringSize-(ringSize/10)), 0, ringSize, 71) 
-drawPoint(4*ringSize+marginLeft, 4*ringSize+marginTop, randInRange(5, 85), randInRange(ringSize/10, ringSize-(ringSize/10)), 3, ringSize, 72) 
+ctx.beginPath(); 
+ctx.setLineDash([5, 5]) 
+ctx.moveTo(450, 450) 
+ctx.lineTo(850.0, 450.0) 
+ctx.stroke() 
+ctx.moveTo(450, 450) 
+ctx.lineTo(450.0, 50.0) 
+ctx.stroke() 
+ctx.moveTo(450, 450) 
+ctx.lineTo(50.0, 449.99999999999994) 
+ctx.stroke() 
+ctx.moveTo(450, 450) 
+ctx.lineTo(449.99999999999994, 850.0) 
+ctx.stroke() 
+ctx.moveTo(450, 450) 
+ctx.lineTo(850.0, 450.0000000000001) 
+ctx.stroke() 
+ctx.setLineDash([0, 0]) 
+ctx.beginPath(); 
+ctx.arc(450, 450, 100*1, 0, 2*Math.PI);
+ctx.stroke(); 
+ctx.beginPath(); 
+ctx.arc(450, 450, 100*2, 0, 2*Math.PI);
+ctx.stroke(); 
+ctx.beginPath(); 
+ctx.arc(450, 450, 100*3, 0, 2*Math.PI);
+ctx.stroke(); 
+ctx.beginPath(); 
+ctx.arc(450, 450, 100*4, 0, 2*Math.PI);
+ctx.stroke(); 
+drawPoint(577.3231446599412, 327.0454684287575, 9, 1) 
+drawPoint(582.9490466566481, 426.5574960149644, 9, 2) 
+drawPoint(169.0453597382829, 267.54592326996595, 9, 3) 
+drawPoint(600.4730245868732, 242.89164944001345, 9, 4) 
+drawPoint(724.9352840046462, 416.24219187677414, 9, 5) 
+drawPoint(472.0262136867443, 422.79989134900603, 9, 6) 
+drawPoint(268.23769236801076, 159.11950301834588, 9, 7) 
+drawPoint(462.02077327578013, 335.62998203264857, 9, 8) 
+drawPoint(119.22819748336025, 329.60890954936457, 9, 9) 
+drawPoint(725.150703525378, 284.6727779538726, 9, 10) 
+drawPoint(272.6646482090872, 409.0589081094166, 9, 11) 
+drawPoint(694.6589462905455, 205.34105370945457, 9, 12) 
+drawPoint(516.6809002241013, 71.83382284331213, 9, 13) 
+drawPoint(257.13735734202476, 334.11643314523775, 9, 14) 
+drawPoint(820.0857529362528, 343.8796180104553, 9, 15) 
+drawPoint(341.8449228088389, 425.030432967831, 9, 16) 
+drawPoint(204.29627853980136, 350.72925274478325, 9, 17) 
+drawPoint(370.2449147407748, 487.19040703318154, 9, 18) 
+drawPoint(607.9016021250859, 504.3698817943453, 9, 19) 
+drawPoint(455.48412045323164, 494.6645768238595, 9, 20) 
+drawPoint(426.52642186070545, 494.14737964294636, 9, 21) 
+drawPoint(372.41234669739356, 556.7902432574931, 9, 22) 
+drawPoint(479.74453981225986, 527.4871753992678, 9, 23) 
+drawPoint(473.14351711895705, 463.9060280225715, 9, 24) 
+drawPoint(178.46392658392034, 654.6171078716964, 9, 25) 
+drawPoint(461.96888668256565, 535.163053911775, 9, 26) 
+drawPoint(744.0321529821614, 300.1831350859496, 9, 27) 
+drawPoint(552.0377249482351, 116.24964016890061, 9, 28) 
+drawPoint(634.6916125050368, 186.23304173894462, 9, 29) 
+drawPoint(224.47377101138198, 532.0848343981605, 9, 30) 
+drawPoint(489.26508733790655, 457.63235981506176, 9, 31) 
+drawPoint(403.79453048125845, 778.7689988222014, 9, 32) 
+drawPoint(253.02271760140096, 693.246685936032, 9, 33) 
+drawPoint(445.9827790731257, 437.63626528816303, 9, 34) 
+drawPoint(341.8719301538531, 374.28791040166186, 9, 35) 
+drawPoint(454.82208261467986, 459.8867345092908, 9, 36) 
+drawPoint(424.28498097893663, 465.4511422473016, 9, 37) 
+drawPoint(380.5014911133073, 485.4112589796846, 9, 38) 
+drawPoint(479.8757332816401, 475.068716777775, 9, 39) 
+drawPoint(422.701267077247, 227.66966203234387, 9, 40) 
+drawPoint(398.8457230320759, 517.8840183540199, 9, 41) 
+drawPoint(490.19600013627445, 432.1035877046648, 9, 42) 
+drawPoint(440.57115969227675, 455.6654188240106, 9, 43) 
+drawPoint(375.4108578473795, 442.160365254926, 9, 44) 
+drawPoint(102.33370411051152, 394.9350683058387, 9, 45) 
+drawPoint(420.12542635208956, 461.4677743854496, 9, 46) 
+drawPoint(444.46653913408016, 478.46718831998226, 9, 47) 
+drawPoint(619.9225671898818, 667.4909679954552, 9, 48) 
+drawPoint(540.6352284640484, 746.454474348541, 9, 49) 
+drawPoint(362.34389056698956, 352.64802786246133, 9, 50) 
+drawPoint(382.61146278575916, 328.42786070762395, 9, 51) 
+drawPoint(523.2960244213009, 476.67757117940215, 9, 52) 
+drawPoint(491.89791278576513, 459.6728953367862, 9, 53) 
+drawPoint(465.7060349351626, 446.94705607397526, 9, 54) 
+drawPoint(425.7165698238775, 516.7181760757994, 9, 55) 
+drawPoint(716.6972406066449, 276.8047868652214, 9, 56) 
+drawPoint(415.49244898102637, 392.5697908529585, 9, 57) 
+drawPoint(396.0058407863307, 385.65226677800587, 9, 58) 
+drawPoint(366.3196453602934, 442.6789176091967, 9, 59) 
+drawPoint(461.72045356045766, 415.9613312784246, 9, 60) 
+drawPoint(503.1796186626592, 440.62299840598575, 9, 61) 
+drawPoint(460.1227974454739, 406.1533470846644, 9, 62) 
+drawPoint(314.7621562429762, 159.98150814827198, 9, 63) 
+drawPoint(510.04043631440703, 418.0759337305594, 9, 64) 
+drawPoint(454.27063139463525, 401.18645979350447, 9, 65) 
+drawPoint(411.6310907790108, 467.0829390091836, 9, 66) 
+drawPoint(424.3201031445264, 445.932703908954, 9, 67) 
+drawPoint(754.6911816954176, 301.39218123850276, 9, 68) 
+drawPoint(407.73626350752477, 413.2606943765316, 9, 69) 
+drawPoint(741.3727056434459, 295.07438428065603, 9, 70) 
+drawPoint(429.77124395554074, 399.9320718533935, 9, 71) 
+drawPoint(802.5611755783705, 387.83395239523895, 9, 72) 
 }

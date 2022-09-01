@@ -74,9 +74,9 @@ class RadarExporter: DataExporter<Radar> {
                         "ctx.beginPath();\n" +
                         "ctx.arc(x, y, pointSize, 0, 2*Math.PI);\n" +
                         "ctx.fill();\n" +
-                        "ctx.font = 'bold 10px arial';\n" +
-                        "ctx.fillStyle = 'red'; \n" +
-                        "ctx.fillText(label, x-6, y+4);\n" +
+                        "ctx.font = 'bold 14px arial';\n" +
+                        "ctx.fillStyle = 'green'; \n" +
+                        "ctx.fillText(label, x-8, y+6);\n" +
                     "}\n"
             )
 
@@ -106,7 +106,8 @@ class RadarExporter: DataExporter<Radar> {
         }
 
         fun generateHtml() {
-            htmlFile.writeText(
+            htmlFile.writeText("")
+            htmlFile.appendText(
                 "<!DOCTYPE HTML>\n" +
                     "<html>\n" +
                     "<head>\n" +
@@ -114,16 +115,34 @@ class RadarExporter: DataExporter<Radar> {
                         "<script src=\"$fileName.js\"></script>\n" +
                     "</head>\n" +
                     "<body onload=\"drawRadar()\">\n" +
-                    "<canvas id=\"radar\" width="+radar.rings.size*250 +" height="+ radar.rings.size*250 +">\n" +
+                        "<div id='canvas'> \n" +
+                    "<canvas id=\"radar\" width=900 height="+ radar.rings.size*250 +" style='float:left'>\n" +
                     "</canvas>\n" +
-                    "</body>\n" +
-                    "</html>"
+                        "</div> \n"
             )
-
+            var tech2 = mutableListOf<String>()
+            radar.categories.forEach { category ->
+                htmlFile.appendText(
+                    "<div style='float:left; padding:25px'> \n" +
+                            "<p><b>"+category.name+"</b></p> \n"
+                )
+                radar.technologies.forEachIndexed { index, technology ->
+                    if (technology.category == category) {
+                        htmlFile.appendText("<p>"+(index+1)+". "+technology.name+ "</p>")
+                    }
+                }
+                htmlFile.appendText(
+                    "</div> \n"
+                )
+            }
+            htmlFile.appendText(
+                "</body>\n" +
+                        "</html>"
+            )
         }
 
         generateHtml()
-        generateJsFile(0, 0, 100, 8)
+        generateJsFile(50, 50, 100, 9)
         val files: List<File> = listOf(htmlFile, jsFile)
         return files
     }
@@ -181,7 +200,7 @@ class RadarExporter: DataExporter<Radar> {
                     val startAngle = 360/radar.categories.size *j +5
                     val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
                     val angle = (startAngle..stopAngle).random()
-                    val radius = (5..ringSize.toInt()).random()
+                    val radius = (5..ringSize.toInt()-5).random()
                     when(technology.ring) {
                         Ring.Adopt -> drawPoint(angle, radius, 0, ringSize)
                         Ring.Trial -> drawPoint(angle, radius, 1, ringSize)
