@@ -96,6 +96,7 @@ class RadarExporter: DataExporter<Radar> {
             val tabu = mutableSetOf<Double>()
             radar.technologies.forEachIndexed { index, technology ->
                 for (j in 0 until radar.categories.size) {
+                    /*
                     val color: String = when(j) {
                         0, 4 -> "blue"
                         1, 5 -> "red"
@@ -103,16 +104,17 @@ class RadarExporter: DataExporter<Radar> {
                         3, 7 -> "green"
                         else -> "pink"
                     }
+                     */
                     if (technology.category == radar.categories.elementAt(j)) {
                         val startAngle = 360 / radar.categories.size * j + 5
                         val stopAngle = 360 / radar.categories.size * j + 360 / radar.categories.size - 5
                         val angle = (startAngle..stopAngle).random()
                         val radius = (ringSize / 10..ringSize - (ringSize / 10)).random()
                         when (technology.ring) {
-                            Ring.Adopt -> tabu.add(addPoint(angle, radius, 0, ringSize, (index + 1).toString(), color))
-                            Ring.Trial -> tabu.add(addPoint(angle, radius, 1, ringSize, (index + 1).toString(), color))
-                            Ring.Assess -> tabu.add(addPoint(angle, radius, 2, ringSize, (index + 1).toString(), color))
-                            Ring.Hold -> tabu.add(addPoint(angle, radius, 3, ringSize, (index + 1).toString(), color))
+                            Ring.Adopt -> tabu.add(addPoint(angle, radius, 0, ringSize, (index + 1).toString(), "blue"))
+                            Ring.Trial -> tabu.add(addPoint(angle, radius, 1, ringSize, (index + 1).toString(), "red"))
+                            Ring.Assess -> tabu.add(addPoint(angle, radius, 2, ringSize, (index + 1).toString(), "yellow"))
+                            Ring.Hold -> tabu.add(addPoint(angle, radius, 3, ringSize, (index + 1).toString(), "green"))
                         }
                     }
                 }
@@ -220,6 +222,7 @@ class RadarExporter: DataExporter<Radar> {
 
         radar.technologies.forEachIndexed { index, technology ->
             for(j in 0 until radar.categories.size) {
+                /*
                 val color: BaseColor = when(j) {
                     0, 4 -> BaseColor.BLUE
                     1, 5 -> BaseColor.RED
@@ -227,16 +230,17 @@ class RadarExporter: DataExporter<Radar> {
                     3, 7 -> BaseColor.GREEN
                     else -> BaseColor.PINK
                 }
+                 */
                 if (technology.category == radar.categories.elementAt(j)) {
                     val startAngle = 360/radar.categories.size *j +5
                     val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
                     val angle = (startAngle..stopAngle).random()
                     val radius = (5..ringSize.toInt()-5).random()
                     when(technology.ring) {
-                        Ring.Adopt -> drawPoint(angle, radius, 0, ringSize, index, color)
-                        Ring.Trial -> drawPoint(angle, radius, 1, ringSize, index, color)
-                        Ring.Assess -> drawPoint(angle, radius, 2, ringSize, index, color)
-                        Ring.Hold -> drawPoint(angle, radius, 3, ringSize, index, color)
+                        Ring.Adopt -> drawPoint(angle, radius, 0, ringSize, index, BaseColor.BLUE)
+                        Ring.Trial -> drawPoint(angle, radius, 1, ringSize, index, BaseColor.RED)
+                        Ring.Assess -> drawPoint(angle, radius, 2, ringSize, index, BaseColor.YELLOW)
+                        Ring.Hold -> drawPoint(angle, radius, 3, ringSize, index, BaseColor.GREEN)
                     }
                 }
             }
