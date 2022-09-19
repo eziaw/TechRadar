@@ -23,7 +23,7 @@ internal class RadarExporterTest {
         val import = importer.importFromCsv(fileName).generateRadar()
 
         // when
-        exporter.exportToPdf(import, exportName)
+        exporter.exportToPdf(import, exportName, 50.0)
 
         // then
         assertThat(File("$exportName.pdf").exists()).isTrue()

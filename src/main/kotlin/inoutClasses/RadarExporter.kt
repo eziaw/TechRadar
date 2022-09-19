@@ -10,7 +10,6 @@ import com.itextpdf.text.Element
 import com.itextpdf.text.pdf.BaseFont
 import com.itextpdf.text.pdf.PdfWriter
 import enums.Ring
-import java.util.HexFormat
 import kotlin.math.cos
 import kotlin.math.pow
 import kotlin.math.sin
@@ -145,11 +144,16 @@ class RadarExporter: DataExporter<Radar> {
                     "<div style='float:left; padding:25px'> \n" +
                             "<p><b>" + category.name + "</b></p> \n"
                 )
-                radar.technologies.forEachIndexed { index, technology ->
-                    if (technology.category == category) {
-                        htmlFile.appendText("<p>" + (index + 1) + ". " + technology.name + "</p>")
+                radar.rings.forEach { ring ->
+                    htmlFile.appendText("<p><b>"+ring.name+"</b></p>")
+
+                    radar.technologies.forEachIndexed { index, technology ->
+                        if (technology.category == category && technology.ring == ring) {
+                            htmlFile.appendText("<p>" + (index + 1) + ". " + technology.name + "</p>")
+                        }
                     }
                 }
+
                 htmlFile.appendText(
                     "</div> \n"
                 )
@@ -165,13 +169,12 @@ class RadarExporter: DataExporter<Radar> {
         return listOf(htmlFile, jsFile)
     }
 
-    override fun exportToPdf(radar: Radar, fileName: String): File {
+    override fun exportToPdf(radar: Radar, fileName: String, ringSize: Double): File {
 
         val ringsAmount = radar.rings.size
         val categoriesAmount = radar.categories.size
-        val ringSize = 50.0
         val centerX = 300.0
-        val centerY = 600.0
+        val centerY = 800.0-(ringSize*ringsAmount)
 
         val pdfFile = File("$fileName.pdf")
         val output = FileOutputStream(pdfFile)
@@ -232,6 +235,10 @@ class RadarExporter: DataExporter<Radar> {
                 }
                  */
                 if (technology.category == radar.categories.elementAt(j)) {
+                    ctx.beginText()
+                    ctx.setColorFill(BaseColor.BLACK)
+                    ctx.showTextAligned(Element.ALIGN_LEFT, technology.name, 100*(j+1).toFloat(), 375-(index*7).toFloat(), 0F)
+                    ctx.endText()
                     val startAngle = 360/radar.categories.size *j +5
                     val stopAngle = 360/radar.categories.size *j +360/radar.categories.size -5
                     val angle = (startAngle..stopAngle).random()

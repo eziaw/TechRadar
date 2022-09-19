@@ -11,5 +11,5 @@ interface DataImporter {
 
 interface DataExporter<R> {
     fun exportToHtml(radar: Radar, fileName: String): List<File>
-    fun exportToPdf(radar: Radar, fileName: String): File
+    fun exportToPdf(radar: Radar, fileName: String, ringSize: Double): File
 }
